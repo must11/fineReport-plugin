@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plugin>
-    <id>com.fr.plugin.url.data.JsonData</id>
-    <name><![CDATA[url请求数据集111]]></name>
+    <id>com.git.must11.plugin.urlJson</id>
+    <name><![CDATA[url请求数据集]]></name>
     <active>yes</active>
     <version>1.0</version>
     <env-version>10.0</env-version>
@@ -8,11 +8,17 @@
     <vendor>author</vendor>
     <description><![CDATA[url请求数据集]]></description>
     <change-notes><![CDATA[
-      [2020-06-02]初始化插件。<br/>
+      [2022-09-23]初始化插件。<br/>
     ]]></change-notes>
+    <change-notes><![CDATA[]]></change-notes>
+    <main-package>com.git.must11.plugin</main-package>
+
+    <extra-core>
+        <LocaleFinder class="com.git.must11.plugin.resource.LocaleFinderImpl"/>
+    </extra-core>
     <extra-designer>
-        <TableDataDefineProvider class="com.fr.plugin.url.data.JsonData"/>
+        <TableDataDefineProvider class="com.git.must11.plugin.UrlJson"/>
     </extra-designer>
-    <function-recorder class="com.fr.plugin.url.data.JsonDataTable"/>
+    <function-recorder class="com.git.must11.plugin.UrlJsonTableData"/>
 
 </plugin>
