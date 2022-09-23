@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><plugin>
+    <id>com.fr.plugin.url.data.JsonData</id>
+    <name><![CDATA[url请求数据集111]]></name>
+    <active>yes</active>
+    <version>1.0</version>
+    <env-version>10.0</env-version>
+    <jartime>2018-07-31</jartime>
+    <vendor>author</vendor>
+    <description><![CDATA[url请求数据集]]></description>
+    <change-notes><![CDATA[
+      [2020-06-02]初始化插件。<br/>
+    ]]></change-notes>
+    <extra-designer>
+        <TableDataDefineProvider class="com.fr.plugin.url.data.JsonData"/>
+    </extra-designer>
+    <function-recorder class="com.fr.plugin.url.data.JsonDataTable"/>
+
+</plugin>
