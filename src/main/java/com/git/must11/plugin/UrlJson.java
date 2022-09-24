@@ -24,12 +24,12 @@ public class UrlJson extends AbstractTableDataDefineProvider {
 
     @Override
     public String nameForTableData() {
-        return Toolkit.i18nText("Plugin-UrlJson_TableSet");
+        return Toolkit.i18nText("Plugin-Dataset_Name");
     }
 
     @Override
     public String prefixForTableData() {
-        return "urlJson";
+        return "url";
     }
 
     @Override
