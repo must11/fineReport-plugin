@@ -17,6 +17,8 @@ import com.git.must11.plugin.model.UrlJsonDataModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @EnableMetrics
 public class UrlJsonTableData extends AbstractParameterTableData {
@@ -46,6 +48,8 @@ public class UrlJsonTableData extends AbstractParameterTableData {
         Collection var1 = (Collection)this.parameters.get();
         return (Parameter[])var1.toArray(new Parameter[var1.size()]);
     }
+
+
 
     @Override
     public void readXML(XMLableReader var1) {
@@ -92,8 +96,8 @@ public class UrlJsonTableData extends AbstractParameterTableData {
                 .attr("reposeSuccessFlag", this.reposeSuccessFlag.get())
                 .attr("responseSuccess", this.responseSuccess.get())
                 .end();
-        var1.startTAG("columnNameList").textNode(StableUtils.join((Collection)this.columnNameList.get(), ",,.,,")).end();
-        var1.startTAG("propertyList").textNode(StableUtils.join((Collection)this.propertyList.get(), ",,.,,")).end();
+        var1.startTAG("columnNameList").textNode(StableUtils.join(this.columnNameList.get(), ",,.,,")).end();
+        var1.startTAG("propertyList").textNode(StableUtils.join(this.propertyList.get(), ",,.,,")).end();
         super.writeXML(var1);
     }
 
@@ -145,19 +149,26 @@ public class UrlJsonTableData extends AbstractParameterTableData {
         this.responseSuccess.set(responseSuccess);;
     }
 
-    public ColConf<Collection<String>> getColumnNameList() {
-        return columnNameList;
+    public String[] getColumnNameList() {
+        Collection<String> c=columnNameList.get();
+        return c.toArray(new String[]{});
     }
 
-    public void setColumnNameList(ColConf<Collection<String>> columnNameList) {
-        this.columnNameList = columnNameList;
+    public void setColumnNameList(String[] columnNameList) {
+        for (String s:columnNameList) {
+            this.columnNameList.add(s);
+        }
+
     }
 
-    public ColConf<Collection<String>> getPropertyList() {
-        return propertyList;
+    public String[] getPropertyList() {
+        Collection<String> c=propertyList.get();
+        return c.toArray(new String[]{});
     }
 
-    public void setPropertyList(ColConf<Collection<String>> propertyList) {
-        this.propertyList = propertyList;
+    public void setPropertyList(String[] propertyList) {
+        for (String s:propertyList) {
+            this.propertyList.add(s);
+        }
     }
 }

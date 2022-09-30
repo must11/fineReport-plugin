@@ -135,6 +135,6 @@ public class JsonContentPanel extends BasicPane {
 
     @Override
     protected String title4PopupWindow() {
-        return "json";
+        return "urlJson";
     }
 }

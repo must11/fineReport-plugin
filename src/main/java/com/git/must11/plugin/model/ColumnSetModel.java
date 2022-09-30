@@ -15,19 +15,16 @@ import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class StringColumnTableModel extends UITableModelAdapter<String[]> {
+public class ColumnSetModel extends UITableModelAdapter<ColumnSet> {
     private static final String[] DEFAULT_COLUMN_NAME = {Toolkit.i18nText("Plugin-Column_Name"), Toolkit.i18nText("Plugin-Object_Property")};
-    public StringColumnTableModel(){
+    public ColumnSetModel(){
         this(DEFAULT_COLUMN_NAME);
     }
-
-    public StringColumnTableModel(String[] strings) {
-
+    protected ColumnSetModel(String[] strings) {
         super(strings);
         this.setColumnClass(new Class[]{String.class, String.class});
-        this.setDefaultEditor(String.class, new StringColumnTableModel.StringEditor());
-        this.setDefaultRenderer(String.class, new StringColumnTableModel.CellRenderer());
-
+        this.setDefaultEditor(String.class, new ColumnSetModel.StringEditor());
+        this.setDefaultRenderer(String.class, new ColumnSetModel.CellRenderer());
     }
 
     @Override
@@ -35,11 +32,9 @@ public class StringColumnTableModel extends UITableModelAdapter<String[]> {
         if (i1>1){
             return null;
         }
-        String[] v  = this.getList().get(i);
-        if (v.length!=2){
-            return null;
-        }
-        return v[i1];
+        ColumnSet v  = this.getList().get(i);
+
+        return i1 ==0? v.getColumnName():v.getProperty();
     }
 
     @Override
@@ -47,17 +42,19 @@ public class StringColumnTableModel extends UITableModelAdapter<String[]> {
         if (i1 != 1) {
             return true;
         } else {
-            return this.getList().get(i) != null && StringUtils.isNotEmpty((this.getList().get(i))[0]);
+            return this.getList().get(i) != null && StringUtils.isNotEmpty((this.getList().get(i)).getColumnName());
         }
     }
 
+
+
     @Override
     public UITableEditAction[] createAction() {
-        return new UITableEditAction[]{new StringColumnTableModel.AddAction(), new StringColumnTableModel.DeleteAction()};
+        return new UITableEditAction[]{new ColumnSetModel.AddAction(), new ColumnSetModel.DeleteAction()};
     }
 
     private class StringEditor extends AbstractCellEditor implements TableCellEditor {
-        private UITextField textField = new UITextField();
+        private final UITextField textField = new UITextField();
 
         public StringEditor() {
             this.addCellEditorListener(new CellEditorListener() {
@@ -65,12 +62,16 @@ public class StringColumnTableModel extends UITableModelAdapter<String[]> {
                 }
 
                 public void editingStopped(ChangeEvent var1) {
-                    if (StringColumnTableModel.this.table.getSelectedRow() != -1) {
-                        String[] var2 = (String[]) StringColumnTableModel.this.getList().get(StringColumnTableModel.this.table.getSelectedRow());
-                        String var3 = StringUtils.trimToNull(StringColumnTableModel.StringEditor.this.textField.getText());
-                        FineLoggerFactory.getLogger().error("点击列:{}", StringColumnTableModel.this.table.getSelectedColumn());
-                        var2[StringColumnTableModel.this.table.getSelectedColumn()] = var3;
-                        StringColumnTableModel.this.fireTableDataChanged();
+                    if (ColumnSetModel.this.table.getSelectedRow() != -1) {
+                        ColumnSet columnSet = ColumnSetModel.this.getList().get(ColumnSetModel.this.table.getSelectedRow());
+                        String value = StringUtils.trimToNull(ColumnSetModel.StringEditor.this.textField.getText());
+                        if(ColumnSetModel.this.table.getSelectedColumn() ==0) {
+                            columnSet.setColumnName(value);
+                        }else {
+                            columnSet.setProperty(value);
+                        }
+                        FineLoggerFactory.getLogger().error("对象:{}",columnSet);
+                        ColumnSetModel.this.fireTableDataChanged();
                     }
                 }
             });
@@ -92,24 +93,25 @@ public class StringColumnTableModel extends UITableModelAdapter<String[]> {
         public Component getTableCellRendererComponent(JTable var1, Object var2, boolean var3, boolean var4, int var5, int var6) {
             if (var6 == 0) {
                 this.setBackground(new Color(229, 229, 229));
-                this.setHorizontalAlignment(0);
+                this.setHorizontalAlignment(SwingConstants.CENTER);
             }
 
             return super.getTableCellRendererComponent(var1, var2, var3, var4, var5, var6);
         }
     }
 
-    public class AddAction extends UITableModelAdapter<StringColumnTableModel>.AddTableRowAction {
+    public class AddAction extends UITableModelAdapter<ColumnSet>.AddTableRowAction {
         public void actionPerformed(ActionEvent var1) {
             super.actionPerformed(var1);
-            StringColumnTableModel.this.addList();
+            ColumnSetModel.this.addList();
         }
     }
 
     private void addList() {
-        String[] var1 = new String[]{null,null};
-        this.addRow(var1);
+        ColumnSet columnSet=new ColumnSet();
+        this.addRow(columnSet);
         this.fireTableDataChanged();
         this.table.getSelectionModel().setSelectionInterval(this.table.getRowCount() - 1, this.table.getRowCount() - 1);
     }
+
 }
